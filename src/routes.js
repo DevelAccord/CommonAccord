@@ -1,15 +1,20 @@
 import React, { PropTypes } from 'react'
 import { Route, IndexRoute } from 'react-router'
-import Layout from './example/components/Layout'
-import Home from './example/components/Home'
-import About from './example/components/About'
+import Layout from './commonaccord/components/Layout'
+import Homepage from './commonaccord/components/Homepage'
+import Directory from './commonaccord/components/Directory'
+import File from './commonaccord/components/File'
+import NotFound from './commonaccord/components/NotFound'
 
 
 const routes = (
   <Route path='/' component={Layout}>
-    <IndexRoute component={Home}/>
-    <Route path='about' component={About}/>
+    <IndexRoute component={Homepage}/>
+    <Route path='docs/' component={Directory}/>
+    <Route path='docs/**/' component={Directory}/>
+    <Route path='docs/**' component={File}/>
+    <Route path="*" component={NotFound}/>
   </Route>
-)
+);
 
 export default routes

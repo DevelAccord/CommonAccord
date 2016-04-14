@@ -2,8 +2,11 @@
 @import './variables';
 @import './mixins';
 
+$fa-font-path: '~font-awesome/fonts';
+
 // Get Big Bertha
 @import '~bootstrap/scss/bootstrap';
+@import '~font-awesome/scss/font-awesome';
 
 // Your styles below. Feel free to organize as you wish, using BEM, something
 // similar or just create a big mess here. Practicality beats purity,
@@ -11,7 +14,6 @@
 
 body {
   /* Show it's not fixed to the top */
-  min-height: 75rem;
   padding-top: 6rem;
 }
 
