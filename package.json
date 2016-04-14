@@ -1,7 +1,7 @@
 {
-  "name": "leanjs",
+  "name": "commonaccord",
   "version": "0.0.0",
-  "description": "Yet another starter kit for Universal NodeJS applications using React, Redux, Webpack and Bootstrap 4.",
+  "description": "Universal user interface for the CommonAccord low level legal document processor",
   "babel": {
     "presets": [
       "react",
@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/hartym/LeanJS.git"
+    "url": "https://github.com/DevelAccord"
   },
   "keywords": [
     "react",
@@ -36,9 +36,9 @@
   ],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hartym/LeanJS/issues"
+    "url": "https://github.com/DevelAccord/CommonAccord/issues"
   },
-  "homepage": "https://github.com/hartym/LeanJS",
+  "homepage": "http://commonaccord.org/",
   "dependencies": {
     "babel-polyfill": "^6.7.4",
     "compression": "^1.6.1",
