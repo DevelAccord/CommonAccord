@@ -1,18 +1,12 @@
-import config from '../..';
+import config from '../../index'
 import javascriptLoader from './javascript'
 import styleLoader from './style'
 
 export default [
   javascriptLoader,
   styleLoader,
-  {
-    test: /\.json$/,
-    loader: 'json-loader'
-  },
-  {
-    test: /\.txt$/,
-    loader: 'raw-loader'
-  },
+  { test: /\.json$/, loader: 'json-loader' },
+  { test: /\.txt$/, loader: 'raw-loader' },
   {
     test: /\.(png|jpg|jpeg|gif|svg|woff|woff2)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
     loader: 'url-loader',
@@ -28,4 +22,4 @@ export default [
       name: config.DEBUG ? '[path][name].[ext]?[hash]' : '[hash].[ext]'
     }
   }
-];
+]

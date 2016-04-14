@@ -15,22 +15,16 @@ import Helmet from 'react-helmet'
 import config from '../config'
 import routes from './routes'
 import configureStore from './store'
+import morgan from 'morgan'
 
+function renderElementWithState (store, element) {
+  const innerHtml = ReactDOMServer.renderToString(element)
+  const head = Helmet.rewind()
 
-/**
- * Create HTML from router props.
- */
-function render (store, renderProps) {
-  let innerHtml = ReactDOMServer.renderToString(
-    <Provider store={store}>
-      <RouterContext {...renderProps}/>
-    </Provider>
-  )
-  let head = Helmet.rewind()
-
-  let assets = require('./assets')
-  let mainJs = assets.main.js
-  let mainCss = assets.main.css ? `<link href="${assets.main.css}" media="all" rel="stylesheet" />` : ''
+  const assets = require('../build/assets')
+  const mainJs = assets.main.js
+  const mainCss = assets.main.css
+    ? `<link href="${assets.main.css}" media="all" rel="stylesheet" />` : ''
 
   return `<!doctype html>
 <html ${head.htmlAttributes.toString()}>
@@ -49,19 +43,34 @@ function render (store, renderProps) {
 }
 
 /**
+ * Create HTML from router props.
+ */
+function render (store, renderProps) {
+  return renderElementWithState(store, (
+      <Provider store={store}>
+        <RouterContext {...renderProps} />
+      </Provider>
+    )
+  )
+}
+
+/**
  * Configure server
  */
-function configureServer (server) {
+function createHandler (baseHandler) {
+  const handler = baseHandler || new Express()
+
+  handler.use(morgan('combined'))
   // Add production middlewares
   if (!config.DEBUG) {
-    server.use(require('compression')())
+    handler.use(require('compression')())
   }
 
   // Static files middleware
-  server.use(Express.static(path.join(__dirname, './public/')))
+  handler.use(Express.static(path.join(__dirname, './public/')))
 
   // Main handler
-  server.get('*', (req, res) => {
+  handler.get('*', (req, res) => {
     const memoryHistory = createMemoryHistory(req.url)
     const store = configureStore(memoryHistory)
     const history = syncHistoryWithStore(memoryHistory, store)
@@ -79,8 +88,10 @@ function configureServer (server) {
     })
   })
 
-  return server
+  return handler
 }
+
+const defaultHandler = createHandler()
 
 /**
  * Serve that shit.
@@ -90,12 +101,11 @@ function configureServer (server) {
  * react-starter-kit, I guess they had a good reason to use this hack even if
  * I'd like to remove it.
  */
-let server = configureServer(new Express())
+if (require.main === module) {
+  require('http').createServer(defaultHandler).listen(config.PORT, () => {
+    console.log(`[http] Server listening to :${config.PORT}`)  // eslint-disable-line no-console
+  })
+}
 
-server.listen(config.PORT, function (error) {
-  if (error) {
-    console.error(error)
-  } else {
-    console.info('The server is running. http://localhost:%s/', config.PORT)
-  }
-})
+export default defaultHandler
+

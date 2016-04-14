@@ -9,14 +9,13 @@ import thunkMiddleware from 'redux-thunk'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 
 /**
- * Factory for root reducer, taking into account things like react-router. Will
- * be used for store creation, but also replacing the root reducer if required
- * because of HMR.
+ * Factory for root reducer, taking into account things like react-router. Will be used for store
+ * creation, but also replacing the root reducer if required because of HMR.
  */
 function buildRootReducer () {
   return combineReducers({
     ...require('./reducers').default,
-    routing: routerReducer,
+    routing: routerReducer
   })
 }
 
@@ -35,7 +34,8 @@ export default function configureStore (history, initialState) {
         thunkMiddleware,
         routerMiddleware(history)
       ),
-      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined' ? window.devToolsExtension() : f => f
+      typeof window === 'object' && typeof window.devToolsExtension !== 'undefined'
+        ? window.devToolsExtension() : (f) => f
     )
   )
 

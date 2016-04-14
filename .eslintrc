@@ -1,10 +1,20 @@
 {
   "extends": [
-    "standard",
-    "eslint:recommended",
-    "plugin:react/recommended"
+    "airbnb",
+    "standard"
   ],
   "plugins": [
     "react"
-  ]
+  ],
+  "rules": {
+    "semi": [
+      "error",
+      "never"
+    ],
+    "jsx-quotes": [
+      "error",
+      "prefer-double"
+    ],
+    "react/prefer-stateless-function": "off"
+  }
 }

@@ -1,11 +1,10 @@
-import React, { PropTypes } from 'react'
+import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 import Layout from './commonaccord/components/Layout'
 import Homepage from './commonaccord/components/Homepage'
 import Directory from './commonaccord/components/Directory'
 import File from './commonaccord/components/File'
 import NotFound from './commonaccord/components/NotFound'
-
 
 const routes = (
   <Route path='/' component={Layout}>
@@ -17,4 +16,6 @@ const routes = (
   </Route>
 );
 
-export default routes
+if (module.hot) {
+  module.hot.accept()
+}

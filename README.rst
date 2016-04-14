@@ -1,94 +1,46 @@
 LeanJS
 ======
 
-Yet another starter kit for Universal NodeJS applications using React, Redux,
-Webpack and Bootstrap 4.
+LeanJS is a clean, simple (yet featureful) opinionated NodeJS / React / Redux starter-kit /
+boilerplate projet.
 
-Dependency choice:
-
-* Babel
-* Express
-* React (15)
-* React Router
-* Redux
-* Webpack
-
-And a few glue libraries (like react-redux and react-router-redux).
-
-Tests, coverage and linting:
-
-* ESLint with "JavaScript Standard Style" and a few addons to make it behave correctly with React.
-* Istanbul
-* Karma
-* Tape
-
-Directory structure:
-
-* bin: management and instrumentation scripts
-* build: production releases
-* config: declarative configuration, including webpack configuration.
-* src: application(s) source code.
-* test: tape tests.
+.. image:: https://travis-ci.org/hartym/LeanJS.svg?branch=master
+    :target: https://travis-ci.org/hartym/LeanJS
+    :alt: Continuous Integration Status
 
 
-Install
-:::::::
-
-    npm install
-
-
-Run (development)
-:::::::::::::::::
-
-    make
+.. image:: https://david-dm.org/hartym/LeanJS.svg
+    :target: https://david-dm.org/hartym/LeanJS
+    :alt: Dependencies Status
 
 
-Tests and code style
-::::::::::::::::::::
-
-    make lint
-    make test
+.. image:: https://coveralls.io/repos/github/hartym/LeanJS/badge.svg?branch=master
+    :target: https://coveralls.io/github/hartym/LeanJS?branch=master
+    :alt: Coverage Status
 
 
-Start hacking
-:::::::::::::
+.. image:: https://readthedocs.org/projects/leanjs/badge/?version=latest
+    :target: http://leanjs.readthedocs.org/en/latest/?badge=latest
+    :alt: Documentation Status
 
-An ``example`` application is provided, but do not do much for now. One good
-approach to start hacking based on this starter kit is to clone the repository,
-create a sibling directory to the example application and start coding your app
-next to the examples.
+Goals
+:::::
 
-It has two benefits:
-
-1. You can still look at the example while trying to understand what the fuck I
-   did in this package.
-
-2. You can contribute back to the example or general skeleton easily.
-
-Good luck. As you choosed react, you will waste a lot of time learning all the
-javascript kiddos shenanigans.
+* Setup a full-featured universal NodeJS / React / Redux project fast.
+* Don't setup a hammer if you only need a screwdriver.
+* Focus on value, get to code in seconds, not hours.
 
 
-Build (for production)
-::::::::::::::::::::::
+`Documentation <http://leanjs.readthedocs.org/en/latest/>`_
+:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
-    make build
-
-
-Build (for production, using docker)
-::::::::::::::::::::::::::::::::::::
-
-    make docker-build
+* `Getting Started <http://leanjs.readthedocs.org/en/latest/install.html>`_
+* `Features <http://leanjs.readthedocs.org/en/latest/features.html>`_
+* `Recipes <http://leanjs.readthedocs.org/en/latest/recipes.html>`_
+* `Reference <http://leanjs.readthedocs.org/en/latest/reference.html>`_
+* `Frequently Asked Questions <http://leanjs.readthedocs.org/en/latest/faq.html>`_
 
 
-Production run (using docker)
-:::::::::::::::::::::::::::::
+----
 
-    make docker-run
-
-
-Final word
-::::::::::
-
-Good luck.
-
+Made with ♥ by `Romain Dorgueil <https://twitter.com/rdorgueil>`_ and `contributors <https://github.com/hartym/LeanJS/graphs/contributors>`_.

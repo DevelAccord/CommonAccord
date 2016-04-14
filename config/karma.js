@@ -1,6 +1,6 @@
-require("babel-register");
+require('babel-register')
 
-module.exports = function (config) {
+module.exports = function (config) {  // eslint-disable-line func-names
   config.set({
     // where is my code?
     basePath: '../',
@@ -20,7 +20,7 @@ module.exports = function (config) {
       'test/**/*.js'
     ],
 
-    // we need all our source to be processed by webpack, as ES6 is not understandable by browsers.
+    // we need all our source to be processed by Webpack, as ES6 is not understandable by browsers.
     preprocessors: {
       'test/**/*.js': ['webpack'],
       'src/**/*.js': ['webpack']
@@ -30,13 +30,18 @@ module.exports = function (config) {
     reporters: ['tap', 'coverage'],
 
     coverageReporter: {
+      // specify a common output directory
+      dir: 'coverage',
       reporters: [
-        {type: 'html', dir: 'coverage/'},
-        {type: 'text', file: 'coverage.txt'}
+        // reporters not supporting the `file` property
+        { type: 'html', subdir: 'html' },
+        { type: 'lcov', subdir: '.' },
+        { type: 'text', subdir: '.', file: 'full.txt' },
+        { type: 'text-summary', subdir: '.', file: 'summary.txt' }
       ]
     },
 
-    // Load our Karma specific webpack configuration, that extends the base one.
+    // Load our Karma specific Webpack configuration, that extends the base one.
     webpack: require('./webpack/karma'),
 
     // TODO: is there any reason for that?
@@ -48,5 +53,5 @@ module.exports = function (config) {
     webpackMiddleware: {
       stats: 'errors-only'
     }
-  });
-};
+  })
+}

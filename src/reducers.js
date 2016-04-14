@@ -4,7 +4,6 @@
  * @see redux
  */
 
-
 // Exports
 export default {
 }
