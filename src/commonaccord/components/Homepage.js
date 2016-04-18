@@ -5,7 +5,6 @@ const Homepage = React.createClass({
   render() {
     return (
       <div>
-
         <div className="wrapper first books-background">
           <div className='container'>
             <div className="row">
@@ -62,59 +61,63 @@ const Homepage = React.createClass({
 
         <div className="wrapper">
           <div className="container">
-            <h2>What is CommonAccord?</h2>
-            <p>
-              <strong>CommonAccord</strong> is a toolkit for legal
-              writers and more generally anybody having to use legal
-              documents that uses modern state-of-the-art technologies
-              to enable a simpler yet highly secure trust model.
-            </p>
-            <p>
-              It allows to write legal documents the same way that
-              software developers collaborates on computer code, using
-              patches, diffs, and digital signatures to iterate from
-              one version to another in the most secure and trustable
-              way possible.
-            </p>
+            <div className="row">
+              <div className="col-xs-12">
+                <h2>What is CommonAccord?</h2>
+                <p>
+                  <strong>CommonAccord</strong> is a toolkit for legal
+                  writers and more generally anybody having to use legal
+                  documents that uses modern state-of-the-art technologies
+                  to enable a simpler yet highly secure trust model.
+                </p>
+                <p>
+                  It allows to write legal documents the same way that
+                  software developers collaborates on computer code, using
+                  patches, diffs, and digital signatures to iterate from
+                  one version to another in the most secure and trustable
+                  way possible.
+                </p>
 
-            <h2>What is the Center for Collaborative Law?</h2>
-            <p>
-              The <strong>Center for Collaborative Law</strong> will
-              be a consortium of common economical interest, that
-              aims to produce a trustable legal documents database
-              that can be used as a starting point for CommonAccord
-              users.
-            </p>
+                <h2>What is the Center for Collaborative Law?</h2>
+                <p>
+                  The <strong>Center for Collaborative Law</strong> will
+                  be a consortium of common economical interest, that
+                  aims to produce a trustable legal documents database
+                  that can be used as a starting point for CommonAccord
+                  users.
+                </p>
 
-            <h2>How can I use it?</h2>
-            <p>
-              First, you can look around the documents presented on this
-              website. You will be able to understand what can be produced using
-              CommonAccord.
-            </p>
+                <h2>How can I use it?</h2>
+                <p>
+                  First, you can look around the documents presented on this
+                  website. You will be able to understand what can be produced using
+                  CommonAccord.
+                </p>
 
-            <ul>
-              <li>Jurismatic contracts</li>
-              <li>Party example</li>
-              <li>Template example</li>
-              <li>...</li>
-            </ul>
+                <ul>
+                  <li>Jurismatic contracts</li>
+                  <li>Party example</li>
+                  <li>Template example</li>
+                  <li>...</li>
+                </ul>
 
-            <p>
-              If you want to produce documents, you probably want to
-              download the software and run it on your computer.
-            </p>
+                <p>
+                  If you want to produce documents, you probably want to
+                  download the software and run it on your computer.
+                </p>
 
-            <h2>How can I contribute?</h2>
+                <h2>How can I contribute?</h2>
 
-            <ul>
-              <li>
-                <a href="#">Contribute to documents</a>
-              </li>
-              <li>
-                <a href="#">Contribute to the software</a>
-              </li>
-            </ul>
+                <ul>
+                  <li>
+                    <a href="#">Contribute to documents</a>
+                  </li>
+                  <li>
+                    <a href="#">Contribute to the software</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
 

@@ -25,10 +25,14 @@ body {
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.12);
 
   .logo {
-    height: 26px;
+    height: 24px;
     display: inline-block;
     vertical-align: sub;
     margin-right: 12px;
+  }
+
+  .navbar-nav .nav-item + .nav-item {
+    margin-left: 1rem;
   }
 }
 
@@ -36,10 +40,16 @@ footer {
   font-size: 12px;
   color: #999;
   text-align: center;
+}
 
-  > .container {
-    padding-right: 15px;
-    padding-left: 15px;
+.wrapper {
+  &.first {
+    border-bottom: 1px solid #ECEFF1;
+  }
+
+  &.last {
+    padding-top: 1rem;
+    border-top: 1px solid #ECEFF1;
   }
 }
 

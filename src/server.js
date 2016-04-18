@@ -16,6 +16,7 @@ import config from '../config'
 import routes from './routes'
 import configureStore from './store'
 import morgan from 'morgan'
+import restfs from 'restfs'
 
 function renderElementWithState (store, element) {
   const innerHtml = ReactDOMServer.renderToString(element)
@@ -57,8 +58,8 @@ function render (store, renderProps) {
 /**
  * Configure server
  */
-function createHandler (baseHandler) {
-  const handler = baseHandler || new Express()
+function createHandler (enhancer) {
+  let handler = new Express()
 
   handler.use(morgan('combined'))
   // Add production middlewares
@@ -68,6 +69,10 @@ function createHandler (baseHandler) {
 
   // Static files middleware
   handler.use(Express.static(path.join(__dirname, './public/')))
+
+  if (enhancer) {
+    handler = enhancer(handler)
+  }
 
   // Main handler
   handler.get('*', (req, res) => {
@@ -91,7 +96,10 @@ function createHandler (baseHandler) {
   return handler
 }
 
-const defaultHandler = createHandler()
+const defaultHandler = createHandler((handler) => {
+  handler.use('/api', restfs('/Users/rd/Sites/CommonAccord/Legal'))
+  return handler;
+})
 
 /**
  * Serve that shit.

@@ -1,9 +1,11 @@
 import React from 'react'
 import Helmet from 'react-helmet'
 import { Link, IndexLink } from 'react-router'
+import { connect } from 'react-redux'
 
 const Layout = React.createClass({
   render() {
+
     return (
       <div>
         <Helmet
@@ -12,12 +14,15 @@ const Layout = React.createClass({
           titleTemplate="%s — CommonAccord"
           defaultTitle="Getting the world to agreement"
           meta={[
-            {name: "description", content: "Getting the world to agreement"},
+            {charset: "utf-8"},
+            {name: "viewport",  content:"width=device-width, initial-scale=1, shrink-to-fit=no"},
+            {name: "description", content: "Getting the world to agreement"}
           ]}
           link={[
             {rel: "icon", type:"image/png", href:"/favicon.png"}
           ]}
         />
+
         <nav className='navbar navbar-fixed-top navbar-light bg-faded'>
           <div className='container'>
             <IndexLink className='navbar-brand' to='/'>
@@ -27,12 +32,23 @@ const Layout = React.createClass({
             <ul className='nav navbar-nav'>
               <li className='nav-item'>
                 <IndexLink className='nav-link' to='/' activeClassName='active'>
-                  Index
+                  /
                 </IndexLink>
               </li>
+              {/*
+                breadcrumb.map((item) => {
+                  return (
+                    <li className="nav-item">
+                      <Link className='nav-link' to='/about' activeClassName='active'>
+                        {item}
+                      </Link>
+                    </li>
+                  )
+                })
+              */}
               <li className='nav-item'>
                 <Link className='nav-link' to='/about' activeClassName='active'>
-                  About
+                  {this.props.params.splat}/
                 </Link>
               </li>
             </ul>
@@ -41,14 +57,17 @@ const Layout = React.createClass({
 
         {this.props.children}
 
-        <hr />
 
-        <footer>
-          <p>
-            This software is provided under the MIT License.<br />
-            Documents shown may be subject to another license.
-          </p>
-        </footer>
+        <div className="wrapper last">
+          <footer className="container">
+            <div className="row">
+              <p className="col-xs-12">
+                This software is provided under the MIT License.<br />
+                Documents shown may be subject to another license.
+              </p>
+            </div>
+          </footer>
+        </div>
       </div>
     );
   }
