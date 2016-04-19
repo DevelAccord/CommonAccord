@@ -4,6 +4,7 @@
  * It will be used to render the server side, SEO-friendly, version of the site.
  */
 
+import bodyParser from 'body-parser'
 import Express from 'express'
 import path from 'path'
 import React from 'react'
@@ -12,11 +13,13 @@ import { Provider } from 'react-redux'
 import { match, RouterContext, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import Helmet from 'react-helmet'
+import morgan from 'morgan'
+import reduce from 'lodash.reduce'
+import zip from 'lodash.zip'
+import map from 'lodash.map'
 import config from '../config'
 import routes from './routes'
 import configureStore from './store'
-import morgan from 'morgan'
-import restfs from 'restfs'
 
 function renderElementWithState (store, element) {
   const innerHtml = ReactDOMServer.renderToString(element)
@@ -96,8 +99,72 @@ function createHandler (enhancer) {
   return handler
 }
 
+
+function statsToJson (stats) {
+  const { atime, mtime, ctime, size } = stats
+  return {
+    atime,
+    mtime,
+    ctime,
+    size,
+    isDirectory: stats.isDirectory(),
+    isFile: stats.isFile()
+  }
+}
+
+function fsApi(docRoot) {
+  const fs = require('fs')
+  const async = require('async')
+
+  return function (req, res) {
+    const url = req.url.startsWith('/') ? req.url.slice(1) : req.url
+    const filename = path.resolve(docRoot, url)
+    const filestat = fs.lstatSync(filename)
+
+    if (filestat.isDirectory()) {
+      fs.readdir(filename, (err, files) => {
+        async.map(
+          map(files, (file) => path.resolve(docRoot, url, file)),
+          fs.stat,
+          (err, stats) => {
+            // send a json response
+            res.json(
+              reduce(zip(files, stats), (ret, file) => {
+                ret[file[0]] = statsToJson(file[1])
+                return ret
+              }, {})
+            )
+          }
+        )
+      })
+
+      return
+    }
+
+    if (filestat.isFile()) {
+      switch (req.method) {
+        case 'GET':
+          return res.sendFile(filename)
+
+        case 'POST':
+          console.log('writefile', filename)
+          return fs.writeFile(filename, req.body, (err) => {
+            if (err) {
+              res.status = 500
+              res.send(`error: ${err}`)
+            } else {
+              res.send('ok')
+            }
+          })
+      }
+    }
+
+    throw new Error('Unhandled.')
+  }
+}
+
 const defaultHandler = createHandler((handler) => {
-  handler.use('/api', restfs('/Users/rd/Sites/CommonAccord/Legal'))
+  handler.use('/api', bodyParser.text(), fsApi(config.DOCUMENT_ROOT))
   return handler;
 })
 

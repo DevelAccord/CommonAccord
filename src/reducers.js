@@ -1,14 +1,9 @@
-/**
- * Reducers.
- *
- * @see redux
- */
+import { file, fileCache } from './reducers/file'
+import { folder, folderCache } from './reducers/folder'
 
-function currentPath(state = '/', action) {
-  return state
-}
-
-// Exports
 export default {
-  currentPath
+  file,
+  fileCache,
+  folder,
+  folderCache
 }

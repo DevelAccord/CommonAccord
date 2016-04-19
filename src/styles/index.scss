@@ -63,10 +63,9 @@ code {
   border-bottom: 1px solid #ECEFF1;
 }
 
-#editor {
-  height: 65vh;
+.editor {
   border: 1px solid #ddd;
-  border-top: none;
+  padding: 1em;
 }
 
 .content {
