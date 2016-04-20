@@ -2,6 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 import { Editor, EditorState, ContentState, KeyBindingUtil, getDefaultKeyBinding } from 'draft-js';
 import { openFile, saveFile } from '../actions/file'
+import { notify } from '../actions/notifications'
 
 const { hasCommandModifier } = KeyBindingUtil;
 
@@ -21,7 +22,10 @@ class CommonAccordEditor extends React.Component {
   handleKeyCommand (command) {
     if (command === 'ca-save') {
       // Perform a request to save your contents, set a new `editorState`, etc.
-      this.props.dispatch(saveFile(this.props.filename, this.state.editorState.getCurrentContent().getPlainText()))
+      this.props.dispatch(
+        saveFile(this.props.filename, this.state.editorState.getCurrentContent().getPlainText())
+      )
+
       return true;
     }
     return false;

@@ -3,6 +3,8 @@ import Helmet from 'react-helmet'
 import { Link, IndexLink } from 'react-router'
 import { connect } from 'react-redux'
 
+import Notifications from './Notifications'
+
 const Layout = React.createClass({
   render() {
     return (
@@ -21,6 +23,8 @@ const Layout = React.createClass({
             {rel: "icon", type:"image/png", href:"/favicon.png"}
           ]}
         />
+
+        <Notifications />
 
         <nav className='navbar navbar-fixed-top navbar-light bg-faded'>
           <div className='container'>
@@ -56,6 +60,7 @@ const Layout = React.createClass({
             </div>
           </footer>
         </div>
+
       </div>
     );
   }

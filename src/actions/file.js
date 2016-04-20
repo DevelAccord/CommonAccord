@@ -1,4 +1,5 @@
 import fetch from 'isomorphic-fetch'
+import { notify } from './notifications'
 import { getApiUrl } from './utils'
 import config from '../../config'
 
@@ -66,6 +67,7 @@ export function saveFile (filename, content) {
         type: FILE_SAVED,
         status: response.status
       })
+      dispatch(notify('File saved.'))
     })
   }
 }
