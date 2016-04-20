@@ -1,6 +1,7 @@
 CommonAccord
 ============
 
+CommonAccord is a legal text management system.
 
 Based on `LeanJS <http://leanjs.readthedocs.org/>`_.
 
