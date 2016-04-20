@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 
 const Layout = React.createClass({
   render() {
-
     return (
       <div>
         <Helmet
@@ -30,33 +29,22 @@ const Layout = React.createClass({
               CommonAccord
             </IndexLink>
             <ul className='nav navbar-nav'>
-              <li className='nav-item'>
-                <IndexLink className='nav-link' to='/' activeClassName='active'>
-                  /
-                </IndexLink>
-              </li>
-              {/*
-                breadcrumb.map((item) => {
+              {
+                this.props.breadcrumb.map((item) => {
                   return (
                     <li className="nav-item">
-                      <Link className='nav-link' to='/about' activeClassName='active'>
-                        {item}
+                      <Link className='nav-link' to={item.link} activeClassName='active'>
+                        {item.label}
                       </Link>
                     </li>
                   )
                 })
-              */}
-              <li className='nav-item'>
-                <Link className='nav-link' to='/about' activeClassName='active'>
-                  {this.props.params.splat}/
-                </Link>
-              </li>
+              }
             </ul>
           </div>
         </nav>
 
         {this.props.children}
-
 
         <div className="wrapper last">
           <footer className="container">
@@ -73,6 +61,13 @@ const Layout = React.createClass({
   }
 });
 
-export default Layout;
+
+const mapStateToProps = ({ breadcrumb }) => {
+  return {
+    breadcrumb
+  }
+}
+
+export default connect(mapStateToProps)(Layout);
 
 

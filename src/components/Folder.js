@@ -3,8 +3,9 @@ import { Link } from 'react-router';
 import { connect } from 'react-redux'
 import fetch from 'isomorphic-fetch'
 import path from 'path'
+import { openFolder } from '../actions/folder'
 
-function formatBytes(b) {
+function formatBytes (b) {
   var i = Math.floor(Math.log(b) / Math.log(1024));
   return !b && '—' || (b / Math.pow(1024, i)).toFixed(0) + " " + ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'][i]
 }
@@ -16,6 +17,8 @@ const Folder = React.createClass({
   },
 
   componentWillMount() {
+    this.props.dispatch(openFolder(this.props.dirname))
+
     fetch(['/api', this.props.dirname].filter(x => !!x).join('/'))
       .then(
         (response) => response.json()
@@ -43,7 +46,8 @@ const Folder = React.createClass({
   },
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps)
+    this.props.dispatch(openFolder(nextProps.dirname))
+
     fetch(['/api', nextProps.dirname].filter(x => !!x).join('/'))
       .then(
         (response) => response.json()
@@ -110,8 +114,7 @@ const Folder = React.createClass({
                       <td className="text-xs-right" data-sort-value="-1">
                         {item.size ? formatBytes(item.size) : '—'}
                       </td>
-                      <td className="text-xs-right" data-sort-value="12345"
-                          title='2016-01-28 22:23:06'>
+                      <td className="text-xs-right" data-sort-value="12345" title='2016-01-28 22:23:06'>
                         1 month ago
                       </td>
                     </tr>

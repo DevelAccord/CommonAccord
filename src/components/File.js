@@ -28,11 +28,7 @@ class CommonAccordEditor extends React.Component {
   }
 
   componentWillMount() {
-    console.log('cwm')
-    if (!this.props.content) {
-      this.props.dispatch(openFile(this.props.filename))
-    }
-
+    this.props.dispatch(openFile(this.props.filename))
     this.setState({
       editorState: this.props.content ? EditorState.createWithContent(
         ContentState.createFromText(this.props.content)
@@ -41,6 +37,7 @@ class CommonAccordEditor extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    this.props.dispatch(openFile(nextProps.filename))
     this.setState({
       editorState: nextProps.content ? EditorState.createWithContent(
         ContentState.createFromText(nextProps.content)
