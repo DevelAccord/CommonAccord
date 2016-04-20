@@ -5,7 +5,7 @@ import { openFile, saveFile } from '../actions/file'
 
 const { hasCommandModifier } = KeyBindingUtil;
 
-function commonAccordEditorKeyBindingFn(e) {
+function commonAccordEditorKeyBindingFn (e) {
   if (e.keyCode === 83 /* `S` key */ && hasCommandModifier(e)) {
     return 'ca-save';
   }
@@ -13,12 +13,12 @@ function commonAccordEditorKeyBindingFn(e) {
 }
 
 class CommonAccordEditor extends React.Component {
-  constructor() {
+  constructor () {
     super()
-    this.onChange = (editorState) => this.setState({editorState});
+    this.onChange = (editorState) => this.setState({ editorState });
   }
 
-  handleKeyCommand(command) {
+  handleKeyCommand (command) {
     if (command === 'ca-save') {
       // Perform a request to save your contents, set a new `editorState`, etc.
       this.props.dispatch(saveFile(this.props.filename, this.state.editorState.getCurrentContent().getPlainText()))
@@ -27,7 +27,7 @@ class CommonAccordEditor extends React.Component {
     return false;
   }
 
-  componentWillMount() {
+  componentWillMount () {
     this.props.dispatch(openFile(this.props.filename))
     this.setState({
       editorState: this.props.content ? EditorState.createWithContent(
@@ -36,8 +36,10 @@ class CommonAccordEditor extends React.Component {
     })
   }
 
-  componentWillReceiveProps(nextProps) {
-    this.props.dispatch(openFile(nextProps.filename))
+  componentWillReceiveProps (nextProps) {
+    if (nextProps.filename !== this.props.filename) {
+      this.props.dispatch(openFile(nextProps.filename))
+    }
     this.setState({
       editorState: nextProps.content ? EditorState.createWithContent(
         ContentState.createFromText(nextProps.content)
@@ -45,7 +47,7 @@ class CommonAccordEditor extends React.Component {
     })
   }
 
-  render() {
+  render () {
     const {editorState} = this.state;
     return <Editor
       editorState={editorState}
@@ -72,7 +74,6 @@ class File extends React.Component {
     )
   }
 }
-
 
 function mapStateToProps (state, ownProps) {
   const filename = ownProps.params.splat

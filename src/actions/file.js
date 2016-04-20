@@ -16,23 +16,6 @@ function setCurrentFile (filename) {
   }
 }
 
-function getFile (filename, callback) {
-  return fetch(getApiUrl(filename))
-    .then(
-      (response) => {
-        console.log('got response')
-        response.text().then(callback)
-      }
-    )
-}
-
-function postFile (filename, content, callback) {
-  fetch(getApiUrl(filename), {
-    method: 'POST',
-    body: content
-  }).then(callback)
-}
-
 function updateFile (filename, content) {
   return {
     type: UPDATE_FILE,
@@ -43,6 +26,12 @@ function updateFile (filename, content) {
   }
 }
 
+/**
+ * Open file.
+ *
+ * @param filename
+ * @returns {Function}
+ */
 export function openFile (filename) {
   return (dispatch, getState) => {
     const { file, fileCache } = getState()
@@ -52,20 +41,27 @@ export function openFile (filename) {
     }
 
     if (fileCache[filename]) {
-      dispatch(updateFile(filename, fileCache[filename]))
+      dispatch(updateFile(filename, fileCache[filename].content))
     } else {
-      getFile(filename, (text) => {
+      _getFile(filename, (text) => {
         dispatch(updateFile(filename, text))
       })
     }
   }
 }
 
+/**
+ * Save file.
+ *
+ * @param filename
+ * @param content
+ * @returns {Function}
+ */
 export function saveFile (filename, content) {
   return (dispatch, getState) => {
     const { file } = getState()
 
-    postFile(filename, content, (response) => {
+    _postFile(filename, content, (response) => {
       dispatch({
         type: FILE_SAVED,
         status: response.status
@@ -73,3 +69,17 @@ export function saveFile (filename, content) {
     })
   }
 }
+
+function _getFile (filename, callback) {
+  return fetch(getApiUrl(filename))
+    .then((response) => response.text())
+    .then(callback)
+}
+
+function _postFile (filename, content, callback) {
+  fetch(getApiUrl(filename), {
+    method: 'POST',
+    body: content
+  }).then(callback)
+}
+

@@ -1,3 +1,4 @@
+import path from 'path'
 import fetch from 'isomorphic-fetch'
 import { getApiUrl } from './utils'
 import config from '../../config'
@@ -15,6 +16,16 @@ function setCurrentFolder (dirname) {
   }
 }
 
+function updateFolder (dirname, items) {
+  return {
+    type: UPDATE_FOLDER,
+    folder: {
+      dirname,
+      items
+    }
+  }
+}
+
 export function openFolder (dirname) {
   return (dispatch, getState) => {
     const { folder, folderCache } = getState()
@@ -23,14 +34,43 @@ export function openFolder (dirname) {
       dispatch(setCurrentFolder(dirname))
     }
 
-    /*
-    if (fileCache[filename]) {
-      dispatch(updateFile(filename, fileCache[filename]))
+    if (folderCache[dirname]) {
+      dispatch(updateFolder(dirname, folderCache[dirname].items))
     } else {
-      getFile(filename, (text) => {
-        dispatch(updateFile(filename, text))
+      _getFolder(dirname, (items) => {
+        dispatch(updateFolder(dirname, items))
       })
     }
-    */
   }
+}
+
+function _getFolder (dirname, callback) {
+  dirname = (dirname || '').startsWith('/') ? dirname.slice(1) : dirname
+
+  return fetch(getApiUrl(dirname))
+    .then(
+      (response) => response.json()
+    )
+    .then(
+      (json) => {
+        let items = dirname ? [{
+          name: '..',
+          icon: 'fa fa-fw fa-reply',
+          link: path.resolve('/docs/', dirname, '..') + '/'
+        }] : []
+        for (var x in json) {
+          if (json.hasOwnProperty(x)) {
+            items.push({
+              name: x,
+              icon: json[x].isDirectory ? 'fa fa-fw fa-folder' : json[x].isFile ? 'fa fa-fw fa-file' : 'fa fa-fw fa-question',
+              link: path.resolve('/docs', dirname || '.', x) + (json[x].isDirectory ? '/' : ''),
+              size: json[x].isDirectory ? null : json[x].size
+            })
+          }
+        }
+
+        return items
+      }
+    )
+    .then(callback)
 }

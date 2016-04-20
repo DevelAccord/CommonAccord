@@ -19,60 +19,19 @@ const Folder = React.createClass({
   componentWillMount() {
     this.props.dispatch(openFolder(this.props.dirname))
 
-    fetch(['/api', this.props.dirname].filter(x => !!x).join('/'))
-      .then(
-        (response) => response.json()
-      )
-      .then(
-        (json) => {
-          let items = this.props.dirname ? [{
-            name: '..',
-            icon: 'fa fa-fw fa-reply',
-            link: path.resolve('/docs/', this.props.dirname, '..') + '/'
-          }] : []
-          for (var x in json) {
-            if (json.hasOwnProperty(x)) {
-              items.push({
-                name: x,
-                icon: json[x].isDirectory ? 'fa fa-fw fa-folder' : json[x].isFile ? 'fa fa-fw fa-file' : 'fa fa-fw fa-question',
-                link: path.resolve('/docs', this.props.dirname || '.', x) + (json[x].isDirectory ? '/' : ''),
-                size: json[x].isDirectory ? null : json[x].size
-              })
-            }
-          }
-          this.setState({ items })
-        }
-      )
+    this.setState({
+      items: this.props.items
+    })
   },
 
   componentWillReceiveProps(nextProps) {
-    this.props.dispatch(openFolder(nextProps.dirname))
+    if (nextProps.dirname !== this.props.dirname) {
+      this.props.dispatch(openFolder(nextProps.dirname))
+    }
 
-    fetch(['/api', nextProps.dirname].filter(x => !!x).join('/'))
-      .then(
-        (response) => response.json()
-      )
-      .then(
-        (json) => {
-          let items = nextProps.dirname ? [{
-            name: '..',
-            icon: 'fa fa-fw fa-reply',
-            link: path.resolve('/docs/', nextProps.dirname, '..') + '/'
-          }] : []
-          for (var x in json) {
-            if (json.hasOwnProperty(x)) {
-              items.push({
-                name: x,
-                icon: json[x].isDirectory ? 'fa fa-fw fa-folder' : json[x].isFile ? 'fa fa-fw fa-file' : 'fa fa-fw fa-question',
-                link: path.resolve('/docs', nextProps.dirname || '.', x) + (json[x].isDirectory ? '/' : ''),
-                size: json[x].isDirectory ? null : json[x].size
-              })
-            }
-          }
-          this.setState({ items })
-        }
-      )
-
+    this.setState({
+      items: nextProps.items
+    })
   },
 
 
@@ -100,7 +59,7 @@ const Folder = React.createClass({
               </thead>
               <tbody>
               {
-                this.state.items.map((item) => {
+                (this.state.items || []).map((item) => {
                   return (
                     <tr key={item.name}>
                       <td className="text-xs-left" data-sort-value="dir-checksum">
@@ -131,9 +90,9 @@ const Folder = React.createClass({
 });
 
 function mapStateToProps (state, ownProps) {
-  const dirname = ownProps.params.splat
+  const dirname = ownProps.params.splat || '/'
 
-  if (dirname == state.folder.dirname) {
+  if (dirname === state.folder.dirname) {
     return state.folder
   } else {
     return {

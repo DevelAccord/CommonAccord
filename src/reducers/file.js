@@ -28,7 +28,7 @@ export function fileCache (state = {}, action) {
   if (UPDATE_FILE === action.type) {
     return {
       ...state,
-      [action.filename]: action.file
+      [action.file.filename]: action.file
     }
   }
 

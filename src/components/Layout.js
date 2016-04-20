@@ -30,9 +30,9 @@ const Layout = React.createClass({
             </IndexLink>
             <ul className='nav navbar-nav'>
               {
-                this.props.breadcrumb.map((item) => {
+                this.props.breadcrumb.map((item, index) => {
                   return (
-                    <li className="nav-item">
+                    <li className="nav-item" key={index}>
                       <Link className='nav-link' to={item.link} activeClassName='active'>
                         {item.label}
                       </Link>

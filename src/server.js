@@ -147,7 +147,6 @@ function fsApi(docRoot) {
           return res.sendFile(filename)
 
         case 'POST':
-          console.log('writefile', filename)
           return fs.writeFile(filename, req.body, (err) => {
             if (err) {
               res.status = 500

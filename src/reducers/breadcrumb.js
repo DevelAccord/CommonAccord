@@ -10,13 +10,13 @@ export function breadcrumb (state = [], action) {
           label: '/',
           link: '/docs/'
         },
-        ...action.filename.split('/').map((el, idx, arr) => {
+        ...(action.filename ? action.filename.split('/').map((el, idx, arr) => {
           const postfix = arr.length > idx + 1 ? '/' : ''
           return {
             label: el + postfix,
             link: path.resolve('/docs', ...arr.slice(0, idx + 1)) + postfix
           }
-        })
+        }) : [])
       ]
 
     case SET_CURRENT_FOLDER:
@@ -25,12 +25,12 @@ export function breadcrumb (state = [], action) {
           label: '/',
           link: '/docs/'
         },
-        ...action.dirname.split('/').map((el, idx, arr) => {
+        ...(action.dirname ? action.dirname.split('/').filter(x => !!x).map((el, idx, arr) => {
           return {
             label: el + '/',
             link: path.resolve('/docs', ...arr.slice(0, idx + 1)) + '/'
           }
-        })
+        }) : [])
       ]
   }
 
