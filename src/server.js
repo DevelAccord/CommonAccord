@@ -169,7 +169,7 @@ function fsApi(docRoot) {
               return res.sendFile(filename)
           }
 
-        case 'POST':
+        case 'PUT':
           return fs.writeFile(filename, req.body, (err) => {
             if (err) {
               res.status = 500

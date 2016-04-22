@@ -68,7 +68,7 @@ export function saveFile (filename, content) {
   return (dispatch, getState) => {
     const { file } = getState()
 
-    _postFile(filename, content, (response) => {
+    _putFile(filename, content, (response) => {
       dispatch({
         type: FILE_SAVED,
         status: response.status
@@ -88,9 +88,9 @@ function _getFile (filename, callback) {
     .then(callback)
 }
 
-function _postFile (filename, content, callback) {
+function _putFile (filename, content, callback) {
   fetch(getApiUrl(filename), {
-    method: 'POST',
+    method: 'PUT',
     body: content
   }).then(callback)
 }

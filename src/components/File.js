@@ -77,7 +77,13 @@ class File extends React.Component {
       <div className="container">
         <div className="row">
 
-          <h1>File: {this.props.filename}</h1>
+          <div className="col-xs-12">
+            <h1>
+              <i className="fa fa-book"></i>
+              {' '}
+              {this.props.filename}
+            </h1>
+          </div>
 
           <div className="col-xs-12 table-responsive">
             <ul className="nav nav-tabs" role="tablist">
