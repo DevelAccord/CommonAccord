@@ -8,16 +8,23 @@ const defaultFileState = {
 export function file (state = defaultFileState, action) {
   // Set the currently opened file
   if (SET_CURRENT_FILE === action.type) {
-    return {
-      filename: action.filename,
-      content: null
+    if (action.filename !== state.filename) {
+      // different filename, reset content
+      return {
+        filename: action.filename,
+      }
     }
   }
 
   // Set content if the update concerns the currently open file
   if (UPDATE_FILE === action.type) {
     if (action.file.filename === state.filename) {
-      return action.file
+      return {
+        ...state,
+        filename: action.file.filename,
+        content: action.file.content || state.content,
+        html: action.file.html || state.html,
+      }
     }
   }
 

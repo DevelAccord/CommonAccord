@@ -1,11 +1,12 @@
 import fetch from 'isomorphic-fetch'
+import sha256 from 'crypto-js/sha256'
 import { notify } from './notifications'
 import { getApiUrl } from './utils'
 import config from '../../config'
 
 export const REQUEST_FILE = 'REQUEST_FILE'
 export const UPDATE_FILE = 'UPDATE_FILE'
-//export const INVALIDATE_FILE = 'INVALIDATE_FILE'
+export const INVALIDATE_FILE = 'INVALIDATE_FILE'
 export const SET_CURRENT_FILE = 'SET_CURRENT_FILE'
 export const FILE_SAVED = 'FILE_SAVED'
 
@@ -17,12 +18,13 @@ function setCurrentFile (filename) {
   }
 }
 
-function updateFile (filename, content) {
+function updateFile (filename, { content, html }) {
   return {
     type: UPDATE_FILE,
     file: {
       filename,
-      content
+      content,
+      html
     }
   }
 }
@@ -41,13 +43,17 @@ export function openFile (filename) {
       dispatch(setCurrentFile(filename))
     }
 
+    /*
     if (fileCache[filename]) {
-      dispatch(updateFile(filename, fileCache[filename].content))
-    } else {
-      _getFile(filename, (text) => {
-        dispatch(updateFile(filename, text))
+      dispatch(updateFile(filename, fileCache[filename]))
+    } else {*/
+      _getFile(filename, (content) => {
+        dispatch(updateFile(filename, { content }))
       })
-    }
+      _getFile(filename+'?format=html', (html) => {
+        dispatch(updateFile(filename, { html }))
+      })
+    //}
   }
 }
 
@@ -67,7 +73,11 @@ export function saveFile (filename, content) {
         type: FILE_SAVED,
         status: response.status
       })
-      dispatch(notify('File saved.'))
+      dispatch(updateFile(filename, { content }))
+      _getFile(filename+'?format=html', (html) => {
+        dispatch(updateFile(filename, { html }))
+      })
+      dispatch(notify(`Saved ${filename}. [${sha256(content).toString().slice(0,7)}...]`))
     })
   }
 }

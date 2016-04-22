@@ -17,6 +17,10 @@ import { Router, browserHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
 import configureStore from './store'
 
+window.jQuery = require('jquery')
+window.Tether = require('tether')
+window.bootstrap = require('bootstrap')
+
 // Styles.
 require('./styles/index.scss')
 

@@ -8,6 +8,7 @@ import bodyParser from 'body-parser'
 import Express from 'express'
 import path from 'path'
 import React from 'react'
+import process from 'child_process'
 import ReactDOMServer from 'react-dom/server'
 import { Provider } from 'react-redux'
 import { match, RouterContext, createMemoryHistory } from 'react-router'
@@ -112,14 +113,30 @@ function statsToJson (stats) {
   }
 }
 
+/**
+ * Run the parser. As fast and as dirty as the previous PHP version, please feel free to make this async.
+ *
+ * @param docPath
+ * @returns {*}
+ */
+function parse(docPath) {
+  return process.execSync('(cd /Users/rd/Sites/CommonAccord/Parser; perl parser-print.pl Doc/' + docPath + ')');
+}
+
 function fsApi(docRoot) {
   const fs = require('fs')
   const async = require('async')
 
   return function (req, res) {
-    const url = req.url.startsWith('/') ? req.url.slice(1) : req.url
+    const url = req.path.startsWith('/') ? req.path.slice(1) : req.path
     const filename = path.resolve(docRoot, url)
-    const filestat = fs.lstatSync(filename)
+    let filestat
+    try {
+      filestat = fs.lstatSync(filename)
+    }
+    catch (e) {
+      return res.status(404).send('Not found.');
+    }
 
     if (filestat.isDirectory()) {
       fs.readdir(filename, (err, files) => {
@@ -144,7 +161,13 @@ function fsApi(docRoot) {
     if (filestat.isFile()) {
       switch (req.method) {
         case 'GET':
-          return res.sendFile(filename)
+          switch (req.query.format) {
+            case 'html':
+              res.set('Content-Type', 'text/html');
+              return res.send(parse(url))
+            default:
+              return res.sendFile(filename)
+          }
 
         case 'POST':
           return fs.writeFile(filename, req.body, (err) => {

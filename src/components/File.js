@@ -21,14 +21,16 @@ class CommonAccordEditor extends React.Component {
 
   handleKeyCommand (command) {
     if (command === 'ca-save') {
-      // Perform a request to save your contents, set a new `editorState`, etc.
-      this.props.dispatch(
-        saveFile(this.props.filename, this.state.editorState.getCurrentContent().getPlainText())
-      )
-
+      this.handleSave()
       return true;
     }
     return false;
+  }
+
+  handleSave () {
+    this.props.dispatch(
+      saveFile(this.props.filename, this.state.editorState.getCurrentContent().getPlainText())
+    )
   }
 
   componentWillMount () {
@@ -53,12 +55,19 @@ class CommonAccordEditor extends React.Component {
 
   render () {
     const {editorState} = this.state;
-    return <Editor
-      editorState={editorState}
-      onChange={this.onChange}
-      handleKeyCommand={this.handleKeyCommand.bind(this)}
-      keyBindingFn={commonAccordEditorKeyBindingFn}
-    />;
+    return (
+      <div className="editor">
+        <Editor
+          editorState={editorState}
+          onChange={this.onChange}
+          handleKeyCommand={this.handleKeyCommand.bind(this)}
+          keyBindingFn={commonAccordEditorKeyBindingFn}
+        />
+        <div className="pull-right" style={{marginBottom:'1em'}}>
+          <button className="btn btn-primary" onClick={this.handleSave.bind(this)}>Save</button>
+        </div>
+      </div>
+    );
   }
 }
 
@@ -67,10 +76,36 @@ class File extends React.Component {
     return (
       <div className="container">
         <div className="row">
+
+          <h1>File: {this.props.filename}</h1>
+
           <div className="col-xs-12 table-responsive">
-            <h1>File: {this.props.filename}</h1>
-            <div className="editor">
-              <CommonAccordEditor {...this.props} />
+            <ul className="nav nav-tabs" role="tablist">
+              <li className="nav-item">
+                <a className="nav-link" data-toggle="tab" href="#view" role="tab">View</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" data-toggle="tab" href="#navigate" role="tab">Navigate</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link active" data-toggle="tab" href="#edit" role="tab">Edit</a>
+              </li>
+            </ul>
+
+            <div className="tab-content">
+              <div className="tab-pane" id="view" role="tabpanel">
+                <div className="viewer">
+                  {this.props.html}
+                </div>
+              </div>
+              <div className="tab-pane" id="navigate" role="tabpanel">
+                <div className="navigator">
+                  Navigate (not implemented yet).
+                </div>
+              </div>
+              <div className="tab-pane active" id="edit" role="tabpanel">
+                <CommonAccordEditor {...this.props} />
+              </div>
             </div>
           </div>
         </div>

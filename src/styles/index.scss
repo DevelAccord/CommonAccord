@@ -63,13 +63,23 @@ code {
   border-bottom: 1px solid #ECEFF1;
 }
 
-.editor {
+.editor, .viewer, .navigator {
   border: 1px solid #ddd;
+  border-top: none;
   padding: 1em;
+  margin-bottom:1em;
 }
 
 .content {
   border: 1px solid #ddd;
   border-top: none;
   padding: 1em;
+}
+
+.notification-list {
+  z-index: 9999;
+}
+
+.notification-bar {
+  z-index: 9999;
 }
