@@ -120,7 +120,7 @@ function statsToJson (stats) {
  * @returns {*}
  */
 function parse(docPath) {
-  return process.execSync('(cd /Users/rd/Sites/CommonAccord/Parser; perl parser-print.pl Doc/' + docPath + ')');
+  return process.execSync('(cd /Users/rd/Sites/CommonAccord/Parser; perl parser-print.pl ' + config.DOCUMENT_ROOT + '/' + docPath + ')');
 }
 
 function fsApi(docRoot) {

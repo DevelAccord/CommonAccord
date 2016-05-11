@@ -100,9 +100,7 @@ class File extends React.Component {
 
             <div className="tab-content">
               <div className="tab-pane" id="view" role="tabpanel">
-                <div className="viewer">
-                  {this.props.html}
-                </div>
+                <div className="viewer" dangerouslySetInnerHTML={{__html: this.props.html}} />
               </div>
               <div className="tab-pane" id="navigate" role="tabpanel">
                 <div className="navigator">
