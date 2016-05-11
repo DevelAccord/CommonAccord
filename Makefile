@@ -3,6 +3,7 @@ NODE_BIN ?= node_modules/.bin
 BABEL ?= $(NODE_BIN)/babel-node
 DOCKER_SERVER ?= $(shell docker-machine ip)
 DOCKER_IMAGE ?= rdorgueil/leanjs
+DOCUMENT_ROOT ?=
 
 # Phony targets (targets without matching file)
 .PHONY: start build doc docker-build docker-run docker-run-bash lint test

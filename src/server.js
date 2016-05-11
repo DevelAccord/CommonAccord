@@ -186,6 +186,7 @@ function fsApi(docRoot) {
 }
 
 const defaultHandler = createHandler((handler) => {
+  console.log(config.DOCUMENT_ROOT);
   handler.use('/api', bodyParser.text(), fsApi(config.DOCUMENT_ROOT))
   return handler;
 })
