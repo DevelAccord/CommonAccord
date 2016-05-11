@@ -4,20 +4,21 @@
  * It will be used to render the server side, SEO-friendly, version of the site.
  */
 
-import bodyParser from 'body-parser'
 import Express from 'express'
-import path from 'path'
+import Helmet from 'react-helmet'
 import React from 'react'
-import process from 'child_process'
 import ReactDOMServer from 'react-dom/server'
+import bodyParser from 'body-parser'
+import compression from 'compression'
+import map from 'lodash.map'
+import morgan from 'morgan'
+import path from 'path'
+import process from 'child_process'
+import reduce from 'lodash.reduce'
+import zip from 'lodash.zip'
 import { Provider } from 'react-redux'
 import { match, RouterContext, createMemoryHistory } from 'react-router'
 import { syncHistoryWithStore } from 'react-router-redux'
-import Helmet from 'react-helmet'
-import morgan from 'morgan'
-import reduce from 'lodash.reduce'
-import zip from 'lodash.zip'
-import map from 'lodash.map'
 import config from '../config'
 import routes from './routes'
 import configureStore from './store'
@@ -26,7 +27,7 @@ function renderElementWithState (store, element) {
   const innerHtml = ReactDOMServer.renderToString(element)
   const head = Helmet.rewind()
 
-  const assets = require('../build/assets')
+  const assets = require('../build/assets') // eslint-disable-line global-require
   const mainJs = assets.main.js
   const mainCss = assets.main.css
     ? `<link href="${assets.main.css}" media="all" rel="stylesheet" />` : ''
@@ -52,11 +53,10 @@ function renderElementWithState (store, element) {
  */
 function render (store, renderProps) {
   return renderElementWithState(store, (
-      <Provider store={store}>
-        <RouterContext {...renderProps} />
-      </Provider>
-    )
-  )
+    <Provider store={store}>
+      <RouterContext {...renderProps} />
+    </Provider>
+  ))
 }
 
 /**
@@ -68,7 +68,7 @@ function createHandler (enhancer) {
   handler.use(morgan('combined'))
   // Add production middlewares
   if (!config.DEBUG) {
-    handler.use(require('compression')())
+    handler.use(compression())
   }
 
   // Static files middleware
@@ -200,9 +200,11 @@ const defaultHandler = createHandler((handler) => {
  * I'd like to remove it.
  */
 if (require.main === module) {
+  /* eslint-disable global-require */
   require('http').createServer(defaultHandler).listen(config.PORT, () => {
     console.log(`[http] Server listening to :${config.PORT}`)  // eslint-disable-line no-console
   })
+  /* eslint-enable global-require */
 }
 
 export default defaultHandler
