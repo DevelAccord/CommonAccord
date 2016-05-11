@@ -13,7 +13,7 @@ let config = {
   'process.env.NODE_ENV': DEBUG ? '"development"' : '"production"',
   __DEV__: DEBUG,
   DOCUMENT_ROOT: process.env.DOCUMENT_ROOT,
-  CMACC_PARSER: process.env.CMACC_PARSER || HOME ? path.resolve(HOME, 'bin/cmacc') : null,
+  CMACC_PARSER: process.env.CMACC_PARSER,
   PORT: 3000
 }
 
