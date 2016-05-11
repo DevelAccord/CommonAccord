@@ -4,8 +4,6 @@ import path from 'path'
 const DEBUG = !!process.env.DEBUG
 const HOME = os.homedir ? os.homedir() : null
 
-console.log(process.env)
-
 let config = {
   DEBUG,
   VERBOSE: DEBUG,
